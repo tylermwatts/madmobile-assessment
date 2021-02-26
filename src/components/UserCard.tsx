@@ -105,7 +105,7 @@ const UserCard: React.FunctionComponent<{user: User}> = ({user}) => {
 	}, [user])
 
 	const onChange = ({ currentTarget: { id, value } } : { currentTarget: { id: string, value: string } }) => {
-		const updated = { ...userInfo, [id]: value }
+		const updated: User = { ...userInfo, [id]: value }
 		setUserInfo(updated)
 	}
 

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css, SerializedStyles } from '@emotion/react';
 import { useEffect, useState } from 'react';
-import SearchAndSort from './SearchAndSort';
+import SearchAndSortHeader from './SearchAndSort';
 import UserCard from './UserCard';
 
 export type User = {
@@ -36,11 +36,11 @@ const UserCardContainer: React.FunctionComponent<{users: User[]}> = ({ users }) 
 	const [sortCriteria, setSortCriteria] = useState<keyof User>('lastName')
 
 	useEffect(() => {
-		const filterBySearch: () => void = () => {
+		const filterSortAndUpdate: () => void = () => {
 			const updatedUsers: User[] = users
 				.filter((u: User) => {
 					const {picture, phone, ...user} = u
-					// filter users based on text input matching values on any property of User, ignoring picture URL
+					// filter users based on text input matching case-insensitive values on any property of User, ignoring picture URL
 					return (Object.keys(user) as Array<keyof Omit<User, 'picture' | 'phone'>>).some((k: keyof Omit<User, 'picture'| 'phone'>) => {
 						return user[k].toLowerCase().includes(searchText.toLowerCase())
 					})
@@ -59,13 +59,13 @@ const UserCardContainer: React.FunctionComponent<{users: User[]}> = ({ users }) 
 				})
 			setUserArray(updatedUsers)
 		}
-		filterBySearch()
+		filterSortAndUpdate()
 		// user list gets updated any time searchText, props.users, sortCriteria, or sortOrder are changed
 	}, [searchText, users, sortCriteria, sortOrder])
 
 	return (
 		<>
-			<SearchAndSort
+			<SearchAndSortHeader
 				searchText={searchText}
 				setSearchText={setSearchText}
 				sortOrder={sortOrder}

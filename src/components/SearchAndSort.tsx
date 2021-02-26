@@ -31,7 +31,7 @@ type Props = {
 	setSortCriteria: Function
 }
 
-const SearchAndSort: React.FunctionComponent<Props> = ({
+const SearchAndSortHeader: React.FunctionComponent<Props> = ({
 	searchText,
 	setSearchText,
 	sortOrder,
@@ -83,7 +83,7 @@ const SearchAndSort: React.FunctionComponent<Props> = ({
 						margin: 0.5rem auto;
 					`}
 				>
-					Sort Contacts:
+					Sort Contacts By:
 				</label>
 				<div
 					css={css`
@@ -191,4 +191,4 @@ const SearchAndSort: React.FunctionComponent<Props> = ({
 	)
 }
 
-export default SearchAndSort
+export default SearchAndSortHeader

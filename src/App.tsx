@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
-import UserCardContainer from './components/UserCardContainer'
+import UserCardContainer, { User } from './components/UserCardContainer'
 
 export default function App() {
-	const [users, setUsers] = useState(null)
+	const [users, setUsers] = useState<User[]>([])
 
-	const fetchUsers = async () => {
+	const fetchUsers: () => Promise<void> = async () => {
 		const userObjs = await fetch(
 			'https://randomuser.me/api/?results=25&inc=name,picture,email,phone,location'
 		)
 			.then((response) => response.json())
 			.then(({ results }) => results)
-		const users = userObjs.map((u) => {
+		const users: User[] = userObjs.map((u: any) => {
 			const {
 				email,
 				location: { city, state },
@@ -22,7 +22,8 @@ export default function App() {
 				email,
 				city,
 				state,
-				name: `${first} ${last}`,
+				firstName: first,
+				lastName: last,
 				phone,
 				picture,
 			}
@@ -31,6 +32,7 @@ export default function App() {
 	}
 
 	useEffect(() => {
+		// hydrate state with users from API
 		fetchUsers()
 	}, [])
 

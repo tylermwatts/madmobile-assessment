@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css, SerializedStyles } from '@emotion/react';
 import { useEffect, useState } from 'react';
-import SearchAndSortHeader from './SearchAndSort';
+import SearchAndSortHeader from './SearchAndSortHeader';
 import UserCard from './UserCard';
 
 export type User = {

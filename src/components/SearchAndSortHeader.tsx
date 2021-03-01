@@ -3,15 +3,12 @@ import { css, SerializedStyles } from '@emotion/react'
 
 const searchBarStyles: SerializedStyles = css`
 	border-radius: 0.25rem;
-	height: 3rem;
+	height: 2.5rem;
 	font-size: 1.5rem;
 	width: 100%;
 	border: none;
 	padding-left: 0.5rem;
-	:focus {
-		outline: none;
-		box-shadow: 0 0 0.5rem 0 #1a1a1a;
-	}
+	box-shadow: 0 0 0.25rem 0 #1a1a1a;
 	@media only screen and (min-width: 768px) {
 		width: 50%;
 		margin: auto;
@@ -37,7 +34,7 @@ const SearchAndSortHeader: React.FunctionComponent<Props> = ({
 	sortOrder,
 	setSortOrder,
 	sortCriteria,
-	setSortCriteria
+	setSortCriteria,
 }) => {
 	return (
 		<div
@@ -45,13 +42,14 @@ const SearchAndSortHeader: React.FunctionComponent<Props> = ({
 				display: flex;
 				flex-direction: column;
 				padding: 1rem;
-				background-color: #00227b;
+				background-color: #dedede;
 			`}
 		>
 			<div
 				css={css`
 					display: flex;
 					align-items: center;
+					margin: 0.5rem 0;
 				`}
 			>
 				<input
@@ -77,28 +75,24 @@ const SearchAndSortHeader: React.FunctionComponent<Props> = ({
 				<label
 					htmlFor='sortBy'
 					css={css`
-						text-align: center;
-						color: #f0f0f0;
 						font-size: 1.5rem;
-						margin: 0.5rem auto;
+						margin: 0.5rem;
 					`}
 				>
 					Sort Contacts By:
 				</label>
-				<div
-					css={css`
-						margin: 0.5rem 0;
-						background-color: #3949ab;
-						box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-					`}
-				>
+				<div>
 					<select
+						data-testid='sortBySelect'
 						id='sortBy'
 						css={css`
 							border-radius: 0.25rem;
 							width: 100%;
 							padding: 0.5rem;
 							font-size: 1.25rem;
+							box-shadow: 0 0 0.25rem 0 #1a1a1a;
+							outline: none;
+							border: none;
 						`}
 						value={sortCriteria}
 						onChange={({ currentTarget: { value } }) => setSortCriteria(value)}
@@ -108,83 +102,68 @@ const SearchAndSortHeader: React.FunctionComponent<Props> = ({
 						<option value='city'>City</option>
 						<option value='state'>State</option>
 					</select>
-					<div
+					<fieldset
 						css={css`
-							display: flex;
-							flex-direction: column;
-							justify-content: space-evenly;
+							border: none;
+							width: 100%;
 							margin: 0.5rem 0;
 							padding: 0.5rem;
-							color: #f0f0f0;
-							@media only screen and (min-width: 768px) {
-								flex-direction: row;
-							}
+							color: #0a0a0a;
 						`}
 					>
-						<fieldset
+						<legend
 							css={css`
-								border: none;
-								width: 100%;
+								text-decoration: underline;
+								font-size: 1.25rem;
 							`}
 						>
-							<legend
+							Sort Oder
+						</legend>
+						<div css={radioContainerStyles}>
+							<input
 								css={css`
-									text-decoration: underline;
-									font-size: 1.25rem;
+									transform: scale(1.5);
+									margin: 0 0.5rem;
 								`}
+								type='radio'
+								id='ascending'
+								name='sortOrder'
+								value='ascending'
+								checked={sortOrder === 'ascending'}
+								onChange={({ currentTarget: { value } }) => setSortOrder(value)}
+							/>
+							<label
+								css={css`
+									font-weight: bold;
+								`}
+								htmlFor='ascending'
 							>
-								Sort Oder
-							</legend>
-							<div css={radioContainerStyles}>
-								<input
-									css={css`
-										transform: scale(1.5);
-										margin: 0 0.5rem;
-									`}
-									type='radio'
-									id='ascending'
-									name='sortOrder'
-									value='ascending'
-									checked={sortOrder === 'ascending'}
-									onChange={({ currentTarget: { value } }) =>
-										setSortOrder(value)
-									}
-								/>
-								<label
-									css={css`
-										font-weight: bold;
-									`}
-									htmlFor='ascending'
-								>
-									Alphabetical
-								</label>
-							</div>
-							<div css={radioContainerStyles}>
-								<input
-									css={css`
-										transform: scale(1.5);
-										margin: 0 0.5rem;
-									`}
-									type='radio'
-									id='descending'
-									name='sortOrder'
-									value='descending'
-									checked={sortOrder === 'descending'}
-									onChange={({ currentTarget: { value } }) =>
-										setSortOrder(value)
-									}
-								/>
-								<label
-									css={css`
-										font-weight: bold;
-									`}
-									htmlFor='descending'
-								>
-									Reverse Alphabetical
-								</label>
-							</div>
-						</fieldset>
-					</div>
+								Alphabetical
+							</label>
+						</div>
+						<div css={radioContainerStyles}>
+							<input
+								css={css`
+									transform: scale(1.5);
+									margin: 0 0.5rem;
+								`}
+								type='radio'
+								id='descending'
+								name='sortOrder'
+								value='descending'
+								checked={sortOrder === 'descending'}
+								onChange={({ currentTarget: { value } }) => setSortOrder(value)}
+							/>
+							<label
+								css={css`
+									font-weight: bold;
+								`}
+								htmlFor='descending'
+							>
+								Reverse Alphabetical
+							</label>
+						</div>
+					</fieldset>
 				</div>
 			</div>
 		</div>

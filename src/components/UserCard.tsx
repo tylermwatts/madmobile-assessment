@@ -3,7 +3,7 @@ import { css, SerializedStyles } from '@emotion/react'
 import { faSave, faUserEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ChangeEvent, useEffect, useState } from 'react'
-import { User } from './UserCardContainer'
+import { User } from './Container'
 
 type EditInputProps = {
 	value: string
@@ -12,7 +12,12 @@ type EditInputProps = {
 	labelText: string
 }
 
-const EditInput: React.FunctionComponent<EditInputProps> = ({ value, onChange, id, labelText }) => {
+const EditInput: React.FunctionComponent<EditInputProps> = ({
+	value,
+	onChange,
+	id,
+	labelText,
+}) => {
 	const inputContainerStyles = css`
 		display: flex;
 		justify-content: space-between;
@@ -37,7 +42,10 @@ type EditFieldsProps = {
 	onChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
-const EditFields: React.FunctionComponent<EditFieldsProps> = ({ userInfo, onChange }) => {
+const EditFields: React.FunctionComponent<EditFieldsProps> = ({
+	userInfo,
+	onChange,
+}) => {
 	const fields = {
 		firstName: 'First Name',
 		lastName: 'Last Name',
@@ -81,7 +89,9 @@ const cardBodyStyles: SerializedStyles = css`
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
 `
 
-const avatarStyles: (isEditing: boolean) => SerializedStyles = (isEditing: boolean) => css`
+const avatarStyles: (isEditing: boolean) => SerializedStyles = (
+	isEditing: boolean
+) => css`
 	position: absolute;
 	top: ${isEditing ? '.5rem' : '5rem'};
 	left: 0;
@@ -93,18 +103,22 @@ const avatarStyles: (isEditing: boolean) => SerializedStyles = (isEditing: boole
 	border: 4px solid white;
 `
 
-const UserCard: React.FunctionComponent<{user: User}> = ({user}) => {
+const UserCard: React.FunctionComponent<{ user: User }> = ({ user }) => {
 	const [userInfo, setUserInfo] = useState<User>({
 		...user,
 	})
 	const [isEditing, setIsEditing] = useState<boolean>(false)
 
 	useEffect(() => {
-		// update user info when props.user changes
+		// update displayed info when props.user changes
 		setUserInfo({ ...user })
 	}, [user])
 
-	const onChange = ({ currentTarget: { id, value } } : { currentTarget: { id: string, value: string } }) => {
+	const onChange = ({
+		currentTarget: { id, value },
+	}: {
+		currentTarget: { id: string; value: string }
+	}) => {
 		const updated: User = { ...userInfo, [id]: value }
 		setUserInfo(updated)
 	}
@@ -124,6 +138,7 @@ const UserCard: React.FunctionComponent<{user: User}> = ({user}) => {
 				`}
 			>
 				<button
+					aria-label='edit'
 					css={css`
 						padding: 0.5rem;
 						background: none;
@@ -156,6 +171,7 @@ const UserCard: React.FunctionComponent<{user: User}> = ({user}) => {
 			>
 				{!isEditing && (
 					<p
+						id='user-name'
 						css={css`
 							color: #f0f0f0;
 							font-size: 1.325rem;
@@ -187,9 +203,9 @@ const UserCard: React.FunctionComponent<{user: User}> = ({user}) => {
 							}
 						`}
 					>
-						<p>{userInfo.email}</p>
-						<p>{userInfo.phone}</p>
-						<p>{`${userInfo.city}, ${userInfo.state}`}</p>
+						<p id='user-email'>{userInfo.email}</p>
+						<p id='user-phone'>{userInfo.phone}</p>
+						<p id='user-location'>{`${userInfo.city}, ${userInfo.state}`}</p>
 					</div>
 				)}
 			</div>

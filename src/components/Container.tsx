@@ -1,18 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css, SerializedStyles } from '@emotion/react'
 import { FunctionComponent, useEffect, useState } from 'react'
+import { User } from '../App'
 import SearchAndSortHeader from './SearchAndSortHeader'
 import UserCard from './UserCard'
-
-export type User = {
-	email: string
-	city: string
-	state: string
-	firstName: string
-	lastName: string
-	phone: string
-	picture: string
-}
 
 const cardContainerStyles: SerializedStyles = css`
 	display: flex;
@@ -29,7 +20,7 @@ const cardContainerStyles: SerializedStyles = css`
 	}
 `
 
-type SearchableUserProps = keyof Omit<User, 'picture' | 'phone'> // custom type for indexing searchable user properties, ignoring picture URL and phone number
+type SearchableUserProps = keyof Omit<User, 'picture' | 'phone' | 'id'> // custom type for indexing searchable user properties, ignoring ID, picture URL, and phone number
 
 const Container: FunctionComponent<{ users: User[] }> = ({ users }) => {
 	const [userArray, setUserArray] = useState<User[]>(users) // maintain a working set of users locally so that filtering/sorting does not mutate the original user array

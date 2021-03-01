@@ -2,8 +2,14 @@
 import { css, SerializedStyles } from '@emotion/react'
 import { faSave, faUserEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react'
-import { User } from './Container'
+import {
+	ChangeEvent,
+	FunctionComponent,
+	useContext,
+	useEffect,
+	useState,
+} from 'react'
+import { User, UserContext } from '../App'
 
 type EditInputProps = {
 	value: string
@@ -38,7 +44,7 @@ const EditInput: FunctionComponent<EditInputProps> = ({
 }
 
 type EditFieldsProps = {
-	userInfo: any
+	userInfo: User
 	onChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -63,15 +69,17 @@ const EditFields: FunctionComponent<EditFieldsProps> = ({
 				}
 			`}
 		>
-			{(Object.keys(fields) as Array<keyof Omit<User, 'picture'>>).map((k) => (
-				<EditInput
-					key={`input-${k}`}
-					value={userInfo[k]}
-					onChange={onChange}
-					id={k}
-					labelText={fields[k]}
-				/>
-			))}
+			{(Object.keys(fields) as Array<keyof Omit<User, 'id' | 'picture'>>).map(
+				(k) => (
+					<EditInput
+						key={`input-${k}`}
+						value={userInfo[k]}
+						onChange={onChange}
+						id={k}
+						labelText={fields[k]}
+					/>
+				)
+			)}
 		</div>
 	)
 }
@@ -109,6 +117,7 @@ const UserCard: FunctionComponent<{ user: User }> = ({ user }) => {
 		...user,
 	})
 	const [isEditing, setIsEditing] = useState<boolean>(false)
+	const userContext = useContext(UserContext)
 
 	useEffect(() => {
 		// update displayed info when props.user changes
@@ -122,6 +131,14 @@ const UserCard: FunctionComponent<{ user: User }> = ({ user }) => {
 	}) => {
 		const updated: User = { ...userInfo, [id]: value }
 		setUserInfo(updated)
+	}
+
+	const onSave = () => {
+		// Context is consumed here to update the user in the original array
+		// Normally this would execute a DB call/GraphQL mutation so I did this to shallowly "mock" that behavior
+		const filteredUsers = userContext.users.filter((u) => u.id !== userInfo.id)
+		userContext.setUsers([userInfo, ...filteredUsers])
+		setIsEditing(false)
 	}
 
 	return (
@@ -152,7 +169,7 @@ const UserCard: FunctionComponent<{ user: User }> = ({ user }) => {
 							outline: #f0f0f0 auto 1px;
 						}
 					`}
-					onClick={() => setIsEditing(!isEditing)}
+					onClick={isEditing ? () => onSave() : () => setIsEditing(true)}
 				>
 					{isEditing ? (
 						<FontAwesomeIcon icon={faSave} />

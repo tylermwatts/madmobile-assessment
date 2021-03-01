@@ -7,7 +7,7 @@ export default function App() {
 	useEffect(() => {
 		const fetchUsers: () => Promise<void> = async () => {
 			const userObjs = await fetch(
-				'https://randomuser.me/api/?nat=us,ca,gb,au,nz&results=25&inc=name,picture,email,phone,location&noinfo'
+				'https://randomuser.me/api/?nat=us,ca,gb,au,nz&results=50&inc=name,picture,email,phone,location&noinfo'
 			)
 				.then((response) => response.json())
 				.then(({ results }) => results)

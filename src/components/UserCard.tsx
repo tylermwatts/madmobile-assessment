@@ -81,8 +81,9 @@ const cardBodyStyles: SerializedStyles = css`
 	display: flex;
 	flex: 1;
 	flex-direction: column;
+	width: 340px;
 	text-align: center;
-	margin: 1rem;
+	margin: 1rem auto;
 	border-radius: 0.5rem;
 	background-color: #f0f0f0;
 	min-height: 24rem;

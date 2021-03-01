@@ -2,7 +2,7 @@
 import { css, SerializedStyles } from '@emotion/react'
 import { faSave, faUserEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react'
 import { User } from './Container'
 
 type EditInputProps = {
@@ -12,7 +12,7 @@ type EditInputProps = {
 	labelText: string
 }
 
-const EditInput: React.FunctionComponent<EditInputProps> = ({
+const EditInput: FunctionComponent<EditInputProps> = ({
 	value,
 	onChange,
 	id,
@@ -42,7 +42,7 @@ type EditFieldsProps = {
 	onChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
-const EditFields: React.FunctionComponent<EditFieldsProps> = ({
+const EditFields: FunctionComponent<EditFieldsProps> = ({
 	userInfo,
 	onChange,
 }) => {
@@ -103,7 +103,7 @@ const avatarStyles: (isEditing: boolean) => SerializedStyles = (
 	border: 4px solid white;
 `
 
-const UserCard: React.FunctionComponent<{ user: User }> = ({ user }) => {
+const UserCard: FunctionComponent<{ user: User }> = ({ user }) => {
 	const [userInfo, setUserInfo] = useState<User>({
 		...user,
 	})

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css, SerializedStyles } from '@emotion/react'
-import { useEffect, useState } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
 import SearchAndSortHeader from './SearchAndSortHeader'
 import UserCard from './UserCard'
 
@@ -31,7 +31,7 @@ const cardContainerStyles: SerializedStyles = css`
 
 type SearchableUserProps = keyof Omit<User, 'picture' | 'phone'> // custom type for indexing searchable user properties, ignoring picture URL and phone number
 
-const Container: React.FunctionComponent<{ users: User[] }> = ({ users }) => {
+const Container: FunctionComponent<{ users: User[] }> = ({ users }) => {
 	const [userArray, setUserArray] = useState<User[]>(users) // maintain a working set of users locally so that filtering/sorting does not mutate the original user array
 	const [searchText, setSearchText] = useState<string>('')
 	const [sortOrder, setSortOrder] = useState<'ascending' | 'descending'>(
@@ -81,11 +81,24 @@ const Container: React.FunctionComponent<{ users: User[] }> = ({ users }) => {
 				sortCriteria={sortCriteria}
 				setSortCriteria={setSortCriteria}
 			/>
-			<div data-testid='userCardContainer' css={cardContainerStyles}>
-				{userArray.map((user: User, i: number) => {
-					return <UserCard key={`user-${i}`} user={user} />
-				})}
-			</div>
+			{userArray.length > 0 ? (
+				<div data-testid='userCardContainer' css={cardContainerStyles}>
+					{userArray.map((user: User, i: number) => {
+						return <UserCard key={`user-${i}`} user={user} />
+					})}
+				</div>
+			) : (
+				<p
+					css={css`
+						text-align: center;
+						font-size: 1.5rem;
+						margin: 1rem auto;
+						color: #0f0f0f;
+					`}
+				>
+					No contacts found
+				</p>
+			)}
 		</>
 	)
 }

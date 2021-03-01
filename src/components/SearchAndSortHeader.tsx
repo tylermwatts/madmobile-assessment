@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css, SerializedStyles } from '@emotion/react'
+import { FunctionComponent } from 'react'
 
 const searchBarStyles: SerializedStyles = css`
 	border-radius: 0.25rem;
@@ -28,7 +29,7 @@ type Props = {
 	setSortCriteria: Function
 }
 
-const SearchAndSortHeader: React.FunctionComponent<Props> = ({
+const SearchAndSortHeader: FunctionComponent<Props> = ({
 	searchText,
 	setSearchText,
 	sortOrder,

@@ -190,6 +190,7 @@ const UserCard: FunctionComponent<{ user: User }> = ({ user }) => {
 						: css`
 								margin-top: auto;
 								text-align: center;
+								padding-bottom: 0.5rem;
 						  `
 				}
 			>

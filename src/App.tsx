@@ -1,4 +1,11 @@
-import { createContext, useEffect, useState } from 'react'
+import {
+	createContext,
+	Dispatch,
+	SetStateAction,
+	useCallback,
+	useEffect,
+	useState,
+} from 'react'
 import Container from './components/Container'
 
 export type User = {
@@ -12,9 +19,12 @@ export type User = {
 	picture: string
 }
 
-const defaultValue: { users: User[]; setUsers: Function } = {
+const defaultValue: {
+	users: User[]
+	setUsers?: Dispatch<SetStateAction<User[]>>
+} = {
 	users: [],
-	setUsers: () => {},
+	setUsers: undefined,
 }
 
 export const UserContext = createContext(defaultValue) // Using context to pass users and setUsers to the UserCard component for updating
@@ -22,33 +32,37 @@ export const UserContext = createContext(defaultValue) // Using context to pass 
 export default function App() {
 	const [users, setUsers] = useState<User[]>([])
 
-	useEffect(() => {
-		const fetchUsers: () => Promise<void> = async () => {
-			const userObjs = await fetch(
-				'https://randomuser.me/api/?nat=us,ca,gb,au,nz&results=50&inc=name,picture,email,phone,location,login&noinfo'
-			)
-				.then((response) => response.json())
-				.then(({ results }) => results)
-			const users: User[] = userObjs.map((u: any) => {
-				const {
-					email,
-					login: { uuid },
-					location: { city, state },
-					name: { first, last },
-					phone,
-					picture: { large: picture },
-				} = u
-				return {
-					email,
-					id: uuid,
-					city,
-					state,
-					firstName: first,
-					lastName: last,
-					phone,
-					picture,
-				}
+	const fetchUsers = useCallback((): Promise<Array<User>> => {
+		return fetch(
+			'https://randomuser.me/api/?nat=us,ca,gb,au,nz&results=50&inc=name,picture,email,phone,location,login&noinfo'
+		)
+			.then((response) => response.json())
+			.then(({ results }) => {
+				return results.map((u: any) => {
+					const {
+						email,
+						login: { uuid },
+						location: { city, state },
+						name: { first, last },
+						phone,
+						picture: { large: picture },
+					} = u
+					return {
+						email,
+						id: uuid,
+						city,
+						state,
+						firstName: first,
+						lastName: last,
+						phone,
+						picture,
+					}
+				})
 			})
+	}, [])
+
+	useEffect(() => {
+		fetchUsers().then((fetchedUsers) => {
 			setUsers([
 				{
 					email: 'tyler.watts@example.com',
@@ -61,12 +75,10 @@ export default function App() {
 					picture:
 						'https://i1.wp.com/www.tor.com/wp-content/uploads/2017/01/Batman-Surf07.jpg?w=630&type=vertical&quality=100&ssl=1',
 				},
-				...users,
+				...fetchedUsers,
 			])
-		}
-		// hydrate state with users from API
-		fetchUsers()
-	}, [])
+		})
+	}, [fetchUsers])
 
 	return (
 		<div className='App'>
